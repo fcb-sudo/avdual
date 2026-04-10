@@ -32,7 +32,7 @@ st.markdown("""<style>
 status = 0
 
 col1_1, col1_2, col1_3 = st.columns([2, 1, 4])
-with col1_1: st.markdown(""" <p style='margin:10; font-size:16px;'>Anmeldenote</p>
+with col1_1: st.markdown(""" <p style='margin:10; font-size:6px;'>Anmeldenote</p>
                              <p style='margin:10; font-size:10px;'>(ganze Note)</p>
                          """, unsafe_allow_html=True)
 
@@ -41,7 +41,8 @@ error1 = col1_3.empty()   # Platz für Fehlermeldung
 
 col2_1, col2_2, col2_3 = st.columns([2, 1, 4])
 with col2_1: st.markdown(""" <p style='margin:0; font-size:12px;'>Kommunikationsprüfung</p>
-                             <p style='margin:0; font-size:10px;'>(ganze oder halbe Note, leer, falls keine KP)</p>
+                             <p style='margin:0; font-size:10px;'>(ganze oder halbe Note,</p>
+                             <p style='margin:0; font-size:10px;'>leer, falls keine KP)</p>
                          """, unsafe_allow_html=True)
 
 with col2_2: eingabe2 = st.text_input("eingabe2", label_visibility="collapsed")
@@ -88,6 +89,7 @@ def check_number(value, error_placeholder, art: Literal["ganz", "halb"]="ganz", 
     eingabe = value.strip()
     if eingabe == "" and muss == "ja":
         error_placeholder.error("Es muss eine Note eingegeben werden!")
+        return None
     if eingabe == "":
         status -= 1
         return 0
@@ -164,11 +166,12 @@ if ok: # Button wurde gedrückt
         rows_html = ""
 
         while mPN <= 6.0:
-            nicht_gerundet = (PE + mPN) / 2.0
+#            nicht_gerundet = (PE + mPN) / 2.0
+            nicht_gerundet = ((PE + mPN) / 2.0 + AN)/2.0
             zeugnis_note = round_2(nicht_gerundet)
             
             # WICHTIG: Hier nur die Zeilen bauen, KEIN </tbody> am Ende hinzufügen!
-            rows_html += f"<tr><td>{mPN:.1f}</td><td>{zeugnis_note}</td><td>{nicht_gerundet:.2f}</td></tr>"
+            rows_html += f"<tr><td>{mPN:.1f}</td><td>{zeugnis_note}</td><td>{nicht_gerundet:.4f}</td></tr>"
             mPN += 0.5
 
         # 2. Das Template bauen
