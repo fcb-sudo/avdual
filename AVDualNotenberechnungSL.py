@@ -6,9 +6,8 @@ import streamlit as st
 # !streamlit run AVDualNotenberechnungSL.py --server.headless true
 
 st.subheader("Notenberechnung AVDual")
-st.markdown("<p style='font-size:10px; color:green;'>Version 3 - Frank Bader</p>", unsafe_allow_html=True)
-st.markdown("""
-<style>
+st.markdown("<p style='font-size:10px; color:green;'>Version 4 - Frank Bader</p>", unsafe_allow_html=True)
+st.markdown("""<style>
     div[data-testid="stTextInput"] input {
         /* 1. Horizontal zentrieren */
         text-align: center !important;
@@ -20,28 +19,19 @@ st.markdown("""
         
         /* 3. Optik */
         font-size: 14px !important;
-    }
-</style>
-""", unsafe_allow_html=True)
+    }</style>""", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
+st.markdown("""<style>
     /* Alle durch st.write oder st.markdown erzeugten Standard-Texte ansprechen */
     .stApp p {
         font-size: 12px !important;    /* Schriftgröße verkleinern */
         margin-bottom: 0px !important; /* Abstand zur nächsten Zeile verringern */
         line-height: 1.0 !important;   /* Zeilenhöhe innerhalb des Textes verkleinern */
-    }
-</style>
-""", unsafe_allow_html=True)
+    }</style>""", unsafe_allow_html=True)
 
 status = 0
-# Zeile 1
-col1_1, col1_2, col1_3 = st.columns([2, 1, 4])
-#with col1_1: st.markdown("Anmeldenote \n (ganze Note):")
 
-#with col1_1: st.markdown("<p style='font-size:10px;'>Anmeldenote<br>(ganze Note)</p>",
-#    unsafe_allow_html=True)
+col1_1, col1_2, col1_3 = st.columns([2, 1, 4])
 with col1_1: st.markdown(""" <p style='margin:10; font-size:16px;'>Anmeldenote</p>
                              <p style='margin:10; font-size:10px;'>(ganze Note)</p>
                          """, unsafe_allow_html=True)
@@ -49,26 +39,18 @@ with col1_1: st.markdown(""" <p style='margin:10; font-size:16px;'>Anmeldenote</
 with col1_2: eingabe1 = st.text_input("eingabe1", label_visibility="collapsed")
 error1 = col1_3.empty()   # Platz für Fehlermeldung
 
-# Zeile 2
 col2_1, col2_2, col2_3 = st.columns([2, 1, 4])
-#with col2_1: st.write("Kommunikationsprüfung (ganze oder halbe Note, leer, falls keine KP):")
-
 with col2_1: st.markdown(""" <p style='margin:0; font-size:12px;'>Kommunikationsprüfung</p>
                              <p style='margin:0; font-size:10px;'>(ganze oder halbe Note, leer, falls keine KP)</p>
                          """, unsafe_allow_html=True)
 
-
 with col2_2: eingabe2 = st.text_input("eingabe2", label_visibility="collapsed")
 error2 = col2_3.empty()
 
-# Zeile 3 (mit Button rechts)
 col3_1, col3_2, col3_3 = st.columns([2, 1, 4])
-#with col3_1: st.write("Schriftliche Prüfungsnote (ganze oder halbe Note):")
-
 with col3_1: st.markdown(""" <p style='margin:0; font-size:12px;'>Schriftliche Prüfungsnote</p>
                              <p style='margin:0; font-size:10px;'>(ganze oder halbe Note)</p>
                          """, unsafe_allow_html=True)
-
 
 with col3_2: eingabe3 = st.text_input("eingabe3", label_visibility="collapsed")
 error3 = col3_3.empty()
@@ -130,7 +112,7 @@ def check_number(value, error_placeholder, art: Literal["ganz", "halb"]="ganz", 
     status -= 1
     return zahl
 
-if ok:
+if ok: # Button wurde gedrückt
     bem = ""
     status = 0
     AN  = check_number(eingabe1, error1, art="ganz", muss="ja")
@@ -173,25 +155,9 @@ if ok:
         with col1_2: st.write(round_2(ZN))
         with col1_3: st.write("nicht gerundet: ",round(ZN,4))
         
-        
         PE = round_1(PE)
 
-
         st.subheader("Zeugnisnote mit mündlicher Prüfung")
-    #     mPN = 1.0
-    #     col1, col2, col3 = st.columns([1, 1, 1])
-    #     with col1: st.markdown("<p style='font-size:10px;'>Mündliche Note</p>", unsafe_allow_html=True)
-    #     with col2: st.markdown("<p style='font-size:10px;'>Zeugnisnote</p>", unsafe_allow_html=True)
-    #     with col3: st.markdown("<p style='font-size:10px;'>nicht gerundet</p>", unsafe_allow_html=True)
-    # 
-    #     while mPN <= 6.0:
-    #         col1, col2, col3 = st.columns([1, 1, 1])
-    #         with col1: st.markdown("<p style='font-size:10px;'>"+ str(mPN) +"</p>", unsafe_allow_html=True)
-    #         with col2: st.markdown("<p style='font-size:10px;'>"+ str(round_2((PE+mPN)/2.0))+"</p>", unsafe_allow_html=True)
-    #         with col3: st.markdown("<p style='font-size:10px;'>"+str((PE+mPN)/2.0)+"</p>", unsafe_allow_html=True)
-    #         
-    #         mPN = mPN + 0.5
-
 
         # 1. Daten in der Schleife sammeln (NUR die <tr> Zeilen!)
         mPN = 1.0
@@ -239,4 +205,3 @@ if ok:
 
         # Jetzt ausgeben
         st.markdown(tabelle_html, unsafe_allow_html=True)
-
