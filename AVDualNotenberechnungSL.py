@@ -123,10 +123,13 @@ if ok: # Button wurde gedrückt
 
     if status==0:
         if KP == 0:
-            PE = sPN
+            PEu = sPN
+            PEg = sPN
         else:
-            PE = (2*sPN+KP)/3.0
-        ZN = (AN+PE)/2.0
+            PEu = (2*sPN+KP)/3.0
+            PEg = round_1(PEu)
+        ZNu = (AN+PEg)/2.0
+        ZNg = round_2(ZNu)
 
         # Ausgabe Notenübersicht
         st.subheader("Notenübersicht")
@@ -149,16 +152,14 @@ if ok: # Button wurde gedrückt
 
         col1_1, col1_2, col1_3 = st.columns([3, 1, 2])
         with col1_1: st.write("Prüfungsergebnis "+bem)
-        with col1_2: st.write(round_1(PE))
-        with col1_3: st.write("nicht gerundet: ", round(PE,4))
+        with col1_2: st.write(PEg)
+        with col1_3: st.write("nicht gerundet: ", round(PEu,4))
         
         col1_1, col1_2, col1_3 = st.columns([3, 1, 2])
         with col1_1: st.write("Zeugnisnote (ohne mündliche Prüfung):")
-        with col1_2: st.write(round_2(ZN))
-        with col1_3: st.write("nicht gerundet: ",round(ZN,4))
+        with col1_2: st.write(ZNg)
+        with col1_3: st.write("nicht gerundet: ",round(ZNu,4))
         
-        PE = round_1(PE)
-
         st.subheader("Zeugnisnote mit mündlicher Prüfung")
 
         # 1. Daten in der Schleife sammeln (NUR die <tr> Zeilen!)
@@ -167,11 +168,11 @@ if ok: # Button wurde gedrückt
 
         while mPN <= 6.0:
 #            nicht_gerundet = (PE + mPN) / 2.0
-            nicht_gerundet = ((PE + mPN) / 2.0 + AN)/2.0
-            zeugnis_note = round_2(nicht_gerundet)
+            ZNu = (((PEg + mPN) / 2.0) + AN)/2.0
+            ZNg = round_2(ZNu)
             
             # WICHTIG: Hier nur die Zeilen bauen, KEIN </tbody> am Ende hinzufügen!
-            rows_html += f"<tr><td>{mPN:.1f}</td><td>{zeugnis_note}</td><td>{nicht_gerundet:.4f}</td></tr>"
+            rows_html += f"<tr><td>{mPN:.1f}</td><td>{ZNg}</td><td>{ZNu:.4f}</td></tr>"
             mPN += 0.5
 
         # 2. Das Template bauen
