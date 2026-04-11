@@ -6,7 +6,7 @@ import streamlit as st
 # !streamlit run AVDualNotenberechnungSL.py --server.headless true
 
 st.subheader("Notenberechnung AVDual")
-st.markdown("<p style='font-size:10px; color:green;'>Version 4 - Frank Bader</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size:10px; color:green;'>Version 5 - Frank Bader</p>", unsafe_allow_html=True)
 st.markdown("""<style>
     div[data-testid="stTextInput"] input {
         /* 1. Horizontal zentrieren */
@@ -167,8 +167,7 @@ if ok: # Button wurde gedrückt
         rows_html = ""
 
         while mPN <= 6.0:
-#            nicht_gerundet = (PE + mPN) / 2.0
-            ZNu = (((PEg + mPN) / 2.0) + AN)/2.0
+            ZNu = (round_1((PEg + mPN) / 2.0) + AN)/2.0
             ZNg = round_2(ZNu)
             
             # WICHTIG: Hier nur die Zeilen bauen, KEIN </tbody> am Ende hinzufügen!
